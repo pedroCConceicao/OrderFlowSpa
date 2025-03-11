@@ -36,8 +36,8 @@ import { AppFloatingConfigurator } from '../../layout/component/app.floatingconf
                                     />
                                 </g>
                             </svg>
-                            <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Welcome to PrimeLand!</div>
-                            <span class="text-muted-color font-medium">Sign in to continue</span>
+                            <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Bem-Vindo ao OrderFlow</div>
+                            <span class="text-muted-color font-medium">Faça login para prosseguir</span>
                         </div>
 
                         <div>
