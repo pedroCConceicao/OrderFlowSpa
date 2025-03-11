@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
 import { AppFloatingConfigurator } from '../../layout/component/app.floatingconfigurator';
+import { AuthService } from '../service/auth.service';
 
 @Component({
     selector: 'app-login',
@@ -68,4 +69,18 @@ export class Login {
     password: string = '';
 
     checked: boolean = false;
+
+    usuario: string = '';
+    senha: string = '';
+    errorMessage: string = '';
+  
+    constructor(private authService: AuthService, private router: Router) {}
+  
+    login(): void {
+      this.authService.login({ usuario: this.usuario, senha: this.senha }).subscribe({
+        next: () => this.router.navigate(['/']), // Redirect after successful login
+        error: () => this.errorMessage = 'Invalid username or password'
+      });
+    }
+  
 }
