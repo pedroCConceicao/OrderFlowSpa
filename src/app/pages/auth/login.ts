@@ -7,13 +7,17 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
 import { AppFloatingConfigurator } from '../../layout/component/app.floatingconfigurator';
-import { AuthService } from '../service/auth.service';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { LoginService } from '../service/login.service';
 
 @Component({
     selector: 'app-login',
     standalone: true,
-    imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, AppFloatingConfigurator],
+    providers: [LoginService, MessageService],
+    imports: [ ToastModule, ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, AppFloatingConfigurator],
     template: `
+        <p-toast />
         <app-floating-configurator />
         <div class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden">
             <div class="flex flex-col items-center justify-center">
@@ -55,7 +59,7 @@ import { AuthService } from '../service/auth.service';
                                 </div>
                                 <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Forgot password?</span>
                             </div>
-                            <p-button label="Sign In" styleClass="w-full" routerLink="/"></p-button>
+                            <p-button label="Sign In" styleClass="w-full" (onClick)="login()"></p-button>
                         </div>
                     </div>
                 </div>
@@ -73,14 +77,20 @@ export class Login {
     usuario: string = '';
     senha: string = '';
     errorMessage: string = '';
-  
-    constructor(private authService: AuthService, private router: Router) {}
-  
-    login(): void {
-      this.authService.login({ usuario: this.usuario, senha: this.senha }).subscribe({
-        next: () => this.router.navigate(['/']), // Redirect after successful login
-        error: () => this.errorMessage = 'Invalid username or password'
-      });
+
+    constructor(private router: Router, private message: MessageService, private loginService: LoginService) { }
+
+    login() {
+        let body = {
+            email: this.email,
+            senha: this.password
+        }
+
+        this.loginService.login(body).subscribe(() => {
+            this.router.navigate(['/']);
+        }, () => {
+            this.errorMessage = 'Usuário ou senha inválidos';
+        });
     }
-  
+
 }
