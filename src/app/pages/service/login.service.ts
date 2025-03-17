@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Pedido } from './models/Pedido.model';
 import { Observable } from 'rxjs';
+import { LoginMessage } from './models/dto/LoginMessage.model';
 
 @Injectable()
 export class LoginService {
@@ -14,12 +15,12 @@ export class LoginService {
 
     apiUrl = 'http://localhost:8080/login';
 
-    login(body: any): Observable<any> {
-        return this.http.post(this.apiUrl, body, {responseType: 'text'}).pipe(
-            map((res) => {
+    login(body: any): Observable<LoginMessage> {
+        return this.http.post<LoginMessage>(this.apiUrl, body).pipe(
+            map((res: LoginMessage) => {
                 console.log(res);
                 return res;
             })
         );
-    }
+    }    
 }

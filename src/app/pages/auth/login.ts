@@ -84,13 +84,19 @@ export class Login {
         let body = {
             email: this.email,
             senha: this.password
-        }
-
-        this.loginService.login(body).subscribe(() => {
-            this.router.navigate(['/']);
+        };
+    
+        this.loginService.login(body).subscribe((res) => {
+            if (res.status) {
+                localStorage.setItem('token', 'mock-token');
+                this.router.navigate(['/']);
+            } else {
+                this.message.add({ severity: 'error', summary: 'Erro', detail: res.message });
+            }
         }, () => {
-            this.errorMessage = 'Usuário ou senha inválidos';
+            this.errorMessage = 'Erro ao tentar login. Tente novamente.';
         });
     }
+    
 
 }
